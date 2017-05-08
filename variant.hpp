@@ -935,7 +935,7 @@ public:
 };
 
 template <class T, class ...Types>
-constexpr bool holds_alternative(variant<Types...> const &v)
+constexpr bool holds_alternative(variant<Types...> const &v) noexcept
 {
     constexpr std::size_t I = variant_detail::index_of_v<T, Types...>;
     static_assert(I != variant_detail::npos);
@@ -996,27 +996,27 @@ constexpr T const &&get(variant<Types...> const &&v)
 
 template <std::size_t I, class ...Types>
 constexpr std::add_pointer_t<std::variant_alternative_t<I, variant<Types...>>>
-get_if(variant<Types...> *v)
+get_if(variant<Types...> *v) noexcept
 {
     return v != nullptr && v->index() == I ? std::addressof(get<I>(*v)) : nullptr;
 }
 
 template <std::size_t I, class ...Types>
 constexpr std::add_pointer_t<std::variant_alternative_t<I, variant<Types...>> const >
-get_if(variant<Types...> const *v)
+get_if(variant<Types...> const *v) noexcept
 {
     return v != nullptr && v->index() == I ? std::addressof(get<I>(*v)) : nullptr;
 }
 
 template <class T, class ...Types>
-constexpr std::add_pointer_t<T> get_if(variant<Types...> *v)
+constexpr std::add_pointer_t<T> get_if(variant<Types...> *v) noexcept
 {
     constexpr std::size_t I = variant_detail::index_of_v<T, Types...>;
     return get_if<I>(v);
 }
 
 template <class T, class ...Types>
-constexpr std::add_pointer_t<T const> get_if(variant<Types...> const *v)
+constexpr std::add_pointer_t<T const> get_if(variant<Types...> const *v) noexcept
 {
     constexpr std::size_t I = variant_detail::index_of_v<T, Types...>;
     return get_if<I>(v);
