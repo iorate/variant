@@ -1,6 +1,3 @@
-/poor_test.cpp
-/test/Makefile.gcc-8
-
 # Prerequisites
 *.d
 
@@ -33,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# My Local Makefile
+/test/Makefile.gcc-8
