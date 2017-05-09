@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(valueless_by_exception)
     }
 }
 
-BOOST_AUTO_TEST_CASE(index)
+BOOST_AUTO_TEST_CASE(index_)
 {
     {
         constexpr iorate::variant<int, double> v = 3.14;

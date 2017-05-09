@@ -2,7 +2,7 @@
 A variant class template with the "Never-Empty" guarantee
 
 ## Description
-The `iorate::variant` class template is a discriminated union container offering the "Never-Empty" guarantee. It is built on `std::variant` in C\++17, and has almost the same interface as `std::variant` (except that it does not support custom allocators, because the underlying `std::variant` does not support them in the current revision of libstdc\++).
+The `iorate::variant` class template is a discriminated union container offering the "Never-Empty" guarantee. It is built on `std::variant` of C\++17, and has almost the same interface as `std::variant` (except that it does not support custom allocators).
 `iorate::variant` realizes the "Never-Empty" guarantee by the temporary backup technique. Before a type-changing operation which may throw is performed, the old value is moved for backup. If the operation throws, the old value is restored from backup. Dynamic memory allocation is performed if and only if the old type is not nothrow-move-constructible.
 
 ## Example
@@ -38,7 +38,7 @@ int main()
 ```
 
 ## Requirements
-A complier that supports C\++17. `iorate::variant` is tested under g\++ 8.0.0 (experimental).
+A complier that supports C\++17. `iorate::variant` is tested under g\++ 7.1.0.
 
 ## Usage
 Just copy `variant.hpp` to your include directory, and include it. `iorate::variant` can be used just like `std::variant`, except that it does not support custom allocators now.

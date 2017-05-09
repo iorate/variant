@@ -32,4 +32,4 @@
 *.app
 
 # My Local Makefile
-/test/Makefile.gcc-8
+/test/Makefile.gcc-7
