@@ -1045,7 +1045,7 @@ struct hash<iorate::variant_detail::wrapper<I, T>>
 {
     size_t operator()(iorate::variant_detail::wrapper<I, T> const &wrapper) const
     {
-        return std::hash<T>()(wrapper.unwrap());
+        return hash<T>()(wrapper.unwrap());
     }
 };
 
@@ -1054,7 +1054,7 @@ struct hash<iorate::variant<Types...>>
 {
     size_t operator()(iorate::variant<Types...> const &v) const
     {
-        return std::hash<typename iorate::variant<Types...>::base_t>()(v.base);
+        return hash<typename iorate::variant<Types...>::base_t>()(v.base);
     }
 };
 
