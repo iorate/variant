@@ -305,7 +305,7 @@ struct wrapper
         value(std::in_place_index<0>, rhs.unwrap())
     {}
 
-    wrapper(wrapper &&rhs) noexcept(false) :
+    wrapper(wrapper &&rhs) :
         value(std::in_place_index<0>, std::move(rhs.unwrap()))
     {}
 
@@ -631,10 +631,7 @@ constexpr std::size_t accepted_index_v = accepted_index_impl<void, T, Types...>:
 
 // index_of
 template <class T, class ...Types>
-struct index_of : size_t_<count_v<T, Types...> == 1 ? find_v<T, Types...> : npos> {};
-
-template <class T, class ...Types>
-constexpr std::size_t index_of_v = index_of<T, Types...>::value;
+constexpr std::size_t index_of_v = count_v<T, Types...> == 1 ? find_v<T, Types...> : npos;
 
 // is_in_place
 template <class T>
