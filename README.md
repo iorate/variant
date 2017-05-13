@@ -2,11 +2,13 @@
 A variant class template with the "Never-Empty" guarantee
 
 ## Description
-The `iorate::variant` class template is a discriminated union container offering the "Never-Empty" guarantee. It is built on `std::variant` of C\++17, and has almost the same interface as `std::variant` (except that it does not support custom allocators).
-`iorate::variant` realizes the "Never-Empty" guarantee by the temporary backup technique. Before a type-changing operation which may throw is performed, the old value is moved for backup. If the operation throws, the old value is restored from backup. Dynamic memory allocation is performed if and only if the old type is not nothrow-move-constructible.
+`iorate::variant` class template is a discriminated union container offering the "Never-Empty" guarantee. It is built on `std::variant` of C\++17, and has almost the same interface as `std::variant` (except that it does not support custom allocators now).
+
+`iorate::variant` realizes the "Never-Empty" guarantee by the temporary backup technique. `std::variant` can be valueless when a type-changing operation (i.e. assignment, emplacement and swap) throws an exception. In `iorate::variant`, before a type-changing operation which may throw is performed, the old value is moved for backup. If the operation throws, the old value is restored from the backup, so that `iorate::variant` will not be valueless. In other words, such operations have the "Strong" exception guarantee. Dynamic memory allocation is performed if and only if the old type is not nothrow-move-constructible.
 
 ## Example
 ```cpp
+// example.cpp
 #include <iostream>
 #include <string>
 #include <variant>
@@ -35,6 +37,12 @@ int main()
     }
     std::cout << "iv has a value: " << iorate::get<0>(iv) << '\n';
 }
+```
+```shell
+$ g++ -std=c++1z example.cpp -o example
+$ ./example
+sv has no value
+iv has a value: Hello, world!
 ```
 
 ## Requirements
