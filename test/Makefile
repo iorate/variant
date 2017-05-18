@@ -28,6 +28,6 @@ run: $(PROGRAM)
 	./$(PROGRAM)
 
 clean:
-	rm -rf $(PROGRAM) $(OBJS)
+	rm -f $(PROGRAM) $(OBJS)
 
 $(filter-out main.o,$(OBJS)): ../variant.hpp common.hpp
