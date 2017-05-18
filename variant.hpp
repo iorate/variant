@@ -119,179 +119,66 @@ constexpr decltype(auto) c_invoke(F &&f, T1 &&t1, Ts &&...ts)
 
 /* Special Member Function Enablers */
 
-// enable_default_constructor
 template <bool>
-struct enable_default_constructor
+struct enable_default_ctor
 {
-    constexpr enable_default_constructor() = delete;
+    enable_default_ctor() = delete;
 };
 
 template <>
-struct enable_default_constructor<true>
-{
-    constexpr enable_default_constructor() = default;
-};
+struct enable_default_ctor<true> {};
 
-// enable_copy_move
-template <bool, bool, bool, bool>
-struct enable_copy_move
+template <bool>
+struct enable_copy_ctor
 {
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
+    enable_copy_ctor() = default;
+    enable_copy_ctor(enable_copy_ctor const &) = delete;
+    enable_copy_ctor(enable_copy_ctor &&) = default;
+    enable_copy_ctor &operator=(enable_copy_ctor const &) = default;
+    enable_copy_ctor &operator=(enable_copy_ctor &&) = default;
 };
 
 template <>
-struct enable_copy_move<false, false, false, true>
+struct enable_copy_ctor<true> {};
+
+template <bool>
+struct enable_move_ctor
 {
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
+    enable_move_ctor() = default;
+    enable_move_ctor(enable_move_ctor const &) = default;
+    enable_move_ctor(enable_move_ctor &&) = delete;
+    enable_move_ctor &operator=(enable_move_ctor const &) = default;
+    enable_move_ctor &operator=(enable_move_ctor &&) = default;
 };
 
 template <>
-struct enable_copy_move<false, false, true, false>
+struct enable_move_ctor<true> {};
+
+template <bool>
+struct enable_copy_assign
 {
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
+    enable_copy_assign() = default;
+    enable_copy_assign(enable_copy_assign const &) = default;
+    enable_copy_assign(enable_copy_assign &&) = default;
+    enable_copy_assign &operator=(enable_copy_assign const &) = delete;
+    enable_copy_assign &operator=(enable_copy_assign &&) = default;
 };
 
 template <>
-struct enable_copy_move<false, false, true, true>
+struct enable_copy_assign<true> {};
+
+template <bool>
+struct enable_move_assign
 {
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
+    enable_move_assign() = default;
+    enable_move_assign(enable_move_assign const &) = default;
+    enable_move_assign(enable_move_assign &&) = default;
+    enable_move_assign &operator=(enable_move_assign const &) = default;
+    enable_move_assign &operator=(enable_move_assign &&) = delete;
 };
 
 template <>
-struct enable_copy_move<false, true, false, false>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
-};
-
-template <>
-struct enable_copy_move<false, true, false, true>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
-};
-
-template <>
-struct enable_copy_move<false, true, true, false>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
-};
-
-template <>
-struct enable_copy_move<false, true, true, true>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = delete;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
-};
-
-template <>
-struct enable_copy_move<true, false, false, false>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
-};
-
-template <>
-struct enable_copy_move<true, false, false, true>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
-};
-
-template <>
-struct enable_copy_move<true, false, true, false>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
-};
-
-template <>
-struct enable_copy_move<true, false, true, true>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = delete;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
-};
-
-template <>
-struct enable_copy_move<true, true, false, false>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
-};
-
-template <>
-struct enable_copy_move<true, true, false, true>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = delete;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
-};
-
-template <>
-struct enable_copy_move<true, true, true, false>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = delete;
-};
-
-template <>
-struct enable_copy_move<true, true, true, true>
-{
-    constexpr enable_copy_move() = default;
-    constexpr enable_copy_move(enable_copy_move const &) = default;
-    constexpr enable_copy_move(enable_copy_move &&) = default;
-    enable_copy_move &operator=(enable_copy_move const &) = default;
-    enable_copy_move &operator=(enable_copy_move &&) = default;
-};
+struct enable_move_assign<true> {};
 
 /* Variant Internals */
 
@@ -419,25 +306,25 @@ DEFINE_WRAPPER_RELATION(> )
 DEFINE_WRAPPER_RELATION(>=)
 #undef DEFINE_WRAPPER_RELATION
 
-// variant_base
+// variant_storage
 template <class Indices, class ...Types>
-struct variant_base_impl;
+struct variant_storage_impl;
 
 template <std::size_t ...Indices, class ...Types>
-struct variant_base_impl<std::index_sequence<Indices...>, Types...>
+struct variant_storage_impl<std::index_sequence<Indices...>, Types...>
 {
     using type = std::variant<wrapper<Indices, Types>...>;
 };
 
 template <class ...Types>
-using variant_base_t = typename variant_base_impl<std::index_sequence_for<Types...>, Types...>::type;
+using variant_storage_t = typename variant_storage_impl<std::index_sequence_for<Types...>, Types...>::type;
 
 /* Visitors for Member Functions */
 
-template <class Base>
+template <class Storage>
 struct copy_assign
 {
-    Base &l_base;
+    Storage &l_storage;
 
     template <std::size_t LI, class LT, std::size_t RI, class RT>
     void operator()(wrapper<LI, LT> &l_wrapper, wrapper<RI, RT> const &r_wrapper)
@@ -445,25 +332,25 @@ struct copy_assign
         if constexpr (LI == RI) {
             l_wrapper.unwrap() = r_wrapper.unwrap();
         } else if constexpr (std::is_nothrow_copy_constructible_v<RT>) {
-            l_base.template emplace<RI>(r_wrapper.unwrap());
+            l_storage.template emplace<RI>(r_wrapper.unwrap());
         } else if constexpr (std::is_nothrow_move_constructible_v<RT>) {
-            l_base.template emplace<RI>(RT(r_wrapper.unwrap()));
+            l_storage.template emplace<RI>(RT(r_wrapper.unwrap()));
         } else {
             auto backup = std::move(l_wrapper).backup();
             try {
-                l_base.template emplace<RI>(r_wrapper.unwrap());
+                l_storage.template emplace<RI>(r_wrapper.unwrap());
             } catch (...) {
-                l_base.template emplace<LI>(std::move(backup));
+                l_storage.template emplace<LI>(std::move(backup));
                 throw;
             }
         }
     }
 };
 
-template <class Base>
+template <class Storage>
 struct move_assign
 {
-    Base &l_base;
+    Storage &l_storage;
 
     template <std::size_t LI, class LT, std::size_t RI, class RT>
     void operator()(wrapper<LI, LT> &l_wrapper, wrapper<RI, RT> &&r_wrapper)
@@ -471,23 +358,23 @@ struct move_assign
         if constexpr (LI == RI) {
             l_wrapper.unwrap() = std::move(r_wrapper).unwrap();
         } else if constexpr (std::is_nothrow_move_constructible_v<RT>) {
-            l_base.template emplace<RI>(std::move(r_wrapper).unwrap());
+            l_storage.template emplace<RI>(std::move(r_wrapper).unwrap());
         } else {
             auto backup = std::move(l_wrapper).backup();
             try {
-                l_base.template emplace<RI>(std::move(r_wrapper).unwrap());
+                l_storage.template emplace<RI>(std::move(r_wrapper).unwrap());
             } catch (...) {
-                l_base.template emplace<LI>(std::move(backup));
+                l_storage.template emplace<LI>(std::move(backup));
                 throw;
             }
         }
     }
 };
 
-template <class Base, std::size_t RI, class RT, class T>
+template <class Storage, std::size_t RI, class RT, class T>
 struct assign
 {
-    Base &l_base;
+    Storage &l_storage;
     T &&t;
 
     template <std::size_t LI, class LT>
@@ -496,25 +383,25 @@ struct assign
         if constexpr (LI == RI) {
             l_wrapper.unwrap() = std::forward<T>(t);
         } else if constexpr (std::is_nothrow_constructible_v<RT, T>) {
-            l_base.template emplace<RI>(std::in_place, std::forward<T>(t));
+            l_storage.template emplace<RI>(std::in_place, std::forward<T>(t));
         } else if constexpr (std::is_nothrow_move_constructible_v<RT>) {
-            l_base.template emplace<RI>(RT(std::forward<T>(t)));
+            l_storage.template emplace<RI>(RT(std::forward<T>(t)));
         } else {
             auto backup = std::move(l_wrapper).backup();
             try {
-                l_base.template emplace<RI>(std::in_place, std::forward<T>(t));
+                l_storage.template emplace<RI>(std::in_place, std::forward<T>(t));
             } catch (...) {
-                l_base.template emplace<LI>(std::move(backup));
+                l_storage.template emplace<LI>(std::move(backup));
                 throw;
             }
         }
     }
 };
 
-template <class Base, std::size_t RI, class RT, class ...Args>
+template <class Storage, std::size_t RI, class RT, class ...Args>
 struct do_emplace
 {
-    Base &l_base;
+    Storage &l_storage;
     std::tuple<Args &&...> args;
 
     template <std::size_t LI, class LT>
@@ -524,7 +411,7 @@ struct do_emplace
             return std::apply(
                 [this](Args &&...args) -> RT &
                 {
-                    return l_base.template emplace<RI>(std::in_place, std::forward<Args>(args)...).unwrap();
+                    return l_storage.template emplace<RI>(std::in_place, std::forward<Args>(args)...).unwrap();
                 },
                 std::move(args)
                 );
@@ -534,23 +421,23 @@ struct do_emplace
                 return std::apply(
                     [this](Args &&...args) -> RT &
                     {
-                        return l_base.template emplace<RI>(std::in_place, std::forward<Args>(args)...).unwrap();
+                        return l_storage.template emplace<RI>(std::in_place, std::forward<Args>(args)...).unwrap();
                     },
                     std::move(args)
                     );
             } catch (...) {
-                l_base.template emplace<LI>(std::move(backup));
+                l_storage.template emplace<LI>(std::move(backup));
                 throw;
             }
         }
     }
 };
 
-template <class Base>
+template <class Storage>
 struct do_swap
 {
-    Base &l_base;
-    Base &r_base;
+    Storage &l_storage;
+    Storage &r_storage;
 
     template <std::size_t LI, class LT, std::size_t RI, class RT>
     void operator()(wrapper<LI, LT> &l_wrapper, wrapper<RI, RT> &r_wrapper)
@@ -561,34 +448,34 @@ struct do_swap
         } else if constexpr (std::is_nothrow_move_constructible_v<LT>) {
             auto l_tmp = std::move(l_wrapper).unwrap();
             if constexpr (std::is_nothrow_move_constructible_v<RT>) {
-                l_base.template emplace<RI>(std::move(r_wrapper).unwrap());
+                l_storage.template emplace<RI>(std::move(r_wrapper).unwrap());
             } else {
                 try {
-                    l_base.template emplace<RI>(std::move(r_wrapper).unwrap());
+                    l_storage.template emplace<RI>(std::move(r_wrapper).unwrap());
                 } catch (...) {
-                    l_base.template emplace<LI>(std::move(l_tmp));
+                    l_storage.template emplace<LI>(std::move(l_tmp));
                     throw;
                 }
             }
-            r_base.template emplace<LI>(std::move(l_tmp));
+            r_storage.template emplace<LI>(std::move(l_tmp));
         } else if constexpr (std::is_nothrow_move_constructible_v<RT>) {
             auto r_tmp = std::move(r_wrapper).unwrap();
             try {
-                r_base.template emplace<LI>(std::move(l_wrapper).unwrap());
+                r_storage.template emplace<LI>(std::move(l_wrapper).unwrap());
             } catch (...) {
-                r_base.template emplace<RI>(std::move(r_tmp));
+                r_storage.template emplace<RI>(std::move(r_tmp));
                 throw;
             }
-            l_base.template emplace<RI>(std::move(r_tmp));
+            l_storage.template emplace<RI>(std::move(r_tmp));
         } else {
             auto backup = std::move(l_wrapper).backup();
             try {
-                l_base.template emplace<RI>(std::move(r_wrapper).unwrap());
+                l_storage.template emplace<RI>(std::move(r_wrapper).unwrap());
             } catch (...) {
-                l_base.template emplace<LI>(std::move(backup));
+                l_storage.template emplace<LI>(std::move(backup));
                 throw;
             }
-            r_base.template emplace<LI>(std::move(backup));
+            r_storage.template emplace<LI>(std::move(backup));
         }
     }
 };
@@ -654,7 +541,7 @@ struct get_impl
     template <class Variant>
     constexpr auto &&operator()(Variant &&v) const
     {
-        return std::get<I>(std::forward<Variant>(v).base).unwrap();
+        return std::get<I>(std::forward<Variant>(v).storage).unwrap();
     }
 };
 
@@ -677,10 +564,49 @@ struct visit_impl
     template <class Visitor, class ...Variants>
     constexpr decltype(auto) operator()(Visitor &&vis, Variants &&...vars) const
     {
-        return std::visit(
-            do_visit<Visitor>{std::forward<Visitor>(vis)},
-            std::forward<Variants>(vars).base...
-            );
+        return std::visit(do_visit<Visitor>{std::forward<Visitor>(vis)}, std::forward<Variants>(vars).storage...);
+    }
+};
+
+/* Implement Special Member Functions */
+
+template <class ...Types>
+struct variant_base
+{
+    using storage_t = variant_storage_t<Types...>;
+
+    storage_t storage;
+
+    constexpr variant_base()
+    noexcept(std::is_nothrow_default_constructible_v<at_t<0, Types...>>) :
+        storage()
+    {}
+
+    variant_base(variant_base const &rhs) :
+        storage(rhs.storage)
+    {}
+
+    variant_base(variant_base &&rhs)
+    noexcept((std::is_nothrow_move_constructible_v<Types> && ...)) :
+        storage(std::move(rhs).storage)
+    {}
+
+    template <class ...Args>
+    constexpr variant_base(Args &&...args) :
+        storage(std::forward<Args>(args)...)
+    {}
+
+    variant_base &operator=(variant_base const &rhs)
+    {
+        std::visit(copy_assign<storage_t>{storage}, storage, rhs.storage);
+        return *this;
+    }
+
+    variant_base &operator=(variant_base &&rhs)
+    noexcept(((std::is_nothrow_move_constructible_v<Types> && std::is_nothrow_move_assignable_v<Types>) && ...))
+    {
+        std::visit(move_assign<storage_t>{storage}, storage, std::move(rhs).storage);
+        return *this;
     }
 };
 
@@ -711,7 +637,7 @@ namespace iorate {
 template <class ...Types> \
 constexpr bool operator OP(variant<Types...> const &lhs, variant<Types...> const &rhs) \
 { \
-    return lhs.base OP rhs.base; \
+    return lhs.storage OP rhs.storage; \
 } \
 /**/
 DEFINE_VARIANT_RELATION(==)
@@ -724,15 +650,12 @@ DEFINE_VARIANT_RELATION(>=)
 
 template <class ...Types>
 class variant :
-    variant_detail::enable_default_constructor<
-        std::is_default_constructible_v<variant_detail::at_t<0, Types...>>
-        >,
-    variant_detail::enable_copy_move<
-        (std::is_copy_constructible_v<Types> && ...),
-        (std::is_move_constructible_v<Types> && ...),
-        ((std::is_copy_constructible_v<Types> && std::is_copy_assignable_v<Types>) && ...),
-        ((std::is_move_constructible_v<Types> && std::is_move_assignable_v<Types>) && ...)
-        >
+    variant_detail::variant_base<Types...>,
+    variant_detail::enable_default_ctor<std::is_default_constructible_v<variant_detail::at_t<0, Types...>>>,
+    variant_detail::enable_copy_ctor<(std::is_copy_constructible_v<Types> && ...)>,
+    variant_detail::enable_move_ctor<(std::is_move_constructible_v<Types> && ...)>,
+    variant_detail::enable_copy_assign<((std::is_copy_constructible_v<Types> && std::is_copy_assignable_v<Types>) && ...)>,
+    variant_detail::enable_move_assign<((std::is_move_constructible_v<Types> && std::is_move_assignable_v<Types>) && ...)>
 {
     static constexpr std::size_t npos = variant_detail::npos;
 
@@ -745,14 +668,14 @@ class variant :
     template <class T>
     static constexpr std::size_t index_of_v = variant_detail::index_of_v<T, Types...>;
 
-    using base_t = variant_detail::variant_base_t<Types...>;
-    
-    base_t base;
+    using base_t = variant_detail::variant_base<Types...>;
 
+    using storage_t = typename base_t::storage_t;
+    
     template <std::size_t I, class ...Args>
     at_t<I> &emplace_impl(Args &&...args)
     {
-        return std::visit(variant_detail::do_emplace<base_t, I, at_t<I>, Args...>{base, std::forward_as_tuple(std::forward<Args>(args)...)}, base);
+        return std::visit(variant_detail::do_emplace<storage_t, I, at_t<I>, Args...>{this->storage, std::forward_as_tuple(std::forward<Args>(args)...)}, this->storage);
     }
 
     template <std::size_t I>
@@ -790,7 +713,7 @@ public:
             > * = nullptr
         >
     constexpr variant(T &&t) noexcept(std::is_nothrow_constructible_v<at_t<I>, T>) :
-        base(std::in_place_index<I>, std::in_place, std::forward<T>(t))
+        base_t(std::in_place_index<I>, std::in_place, std::forward<T>(t))
     {}
 
     template <
@@ -801,7 +724,7 @@ public:
             > * = nullptr
         >
     constexpr explicit variant(std::in_place_type_t<T>, Args &&...args) :
-        base(std::in_place_index<I>, std::in_place, std::forward<Args>(args)...)
+        base_t(std::in_place_index<I>, std::in_place, std::forward<Args>(args)...)
     {}
 
     template <
@@ -812,7 +735,7 @@ public:
             > * = nullptr
         >
     constexpr explicit variant(std::in_place_type_t<T>, std::initializer_list<U> il, Args &&...args) :
-        base(std::in_place_index<I>, std::in_place, il, std::forward<Args>(args)...)
+        base_t(std::in_place_index<I>, std::in_place, il, std::forward<Args>(args)...)
     {}
 
     template <
@@ -822,7 +745,7 @@ public:
             > * = nullptr
         >
     constexpr explicit variant(std::in_place_index_t<I>, Args &&...args) :
-        base(std::in_place_index<I>, std::in_place, std::forward<Args>(args)...)
+        base_t(std::in_place_index<I>, std::in_place, std::forward<Args>(args)...)
     {}
 
     template <
@@ -832,23 +755,14 @@ public:
             > * = nullptr
         >
     constexpr explicit variant(std::in_place_index_t<I>, std::initializer_list<U> il, Args &&...args) :
-        base(std::in_place_index<I>, std::in_place, il, std::forward<Args>(args)...)
+        base_t(std::in_place_index<I>, std::in_place, il, std::forward<Args>(args)...)
     {}
 
     ~variant() = default;
 
-    variant &operator=(variant const &rhs)
-    {
-        std::visit(variant_detail::copy_assign<base_t>{base}, base, rhs.base);
-        return *this;
-    }
+    variant &operator=(variant const &rhs) = default;
 
-    variant &operator=(variant &&rhs)
-    noexcept(((std::is_nothrow_move_constructible_v<Types> && std::is_nothrow_move_assignable_v<Types>) && ...))
-    {
-        std::visit(variant_detail::move_assign<base_t>{base}, base, std::move(rhs.base));
-        return *this;
-    }
+    variant &operator=(variant &&rhs) = default;
 
     template <
         class T,
@@ -862,7 +776,7 @@ public:
     variant &operator=(T &&t)
     noexcept(std::is_nothrow_constructible_v<at_t<I>, T> && std::is_nothrow_assignable_v<at_t<I> &, T>)
     {
-        std::visit(variant_detail::assign<base_t, I, at_t<I>, T>{base, std::forward<T>(t)}, base);
+        std::visit(variant_detail::assign<storage_t, I, at_t<I>, T>{this->storage, std::forward<T>(t)}, this->storage);
         return *this;
     }
 
@@ -921,13 +835,13 @@ public:
 
     constexpr std::size_t index() const noexcept
     {
-        return base.index();
+        return this->storage.index();
     }
 
     void swap(variant &rhs)
     noexcept(((std::is_nothrow_swappable_v<Types> && std::is_nothrow_move_constructible_v<Types>) && ...))
     {
-        std::visit(variant_detail::do_swap<base_t>{base, rhs.base}, base, rhs.base);
+        std::visit(variant_detail::do_swap<storage_t>{this->storage, rhs.storage}, this->storage, rhs.storage);
     }
 };
 
@@ -1054,7 +968,7 @@ struct hash<iorate::variant<Types...>>
 {
     size_t operator()(iorate::variant<Types...> const &v) const
     {
-        return hash<typename iorate::variant<Types...>::base_t>()(v.base);
+        return hash<typename iorate::variant<Types...>::storage_t>()(v.storage);
     }
 };
 
