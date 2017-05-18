@@ -186,7 +186,7 @@ struct enable_move_assign<true> {};
 template <std::size_t I, class T, bool = std::is_nothrow_move_constructible_v<T>>
 struct wrapper
 {
-    constexpr wrapper() = default;
+    wrapper() = default;
 
     wrapper(wrapper const &rhs) :
         value(std::in_place_index<0>, rhs.unwrap())
@@ -246,7 +246,7 @@ private:
 template <std::size_t I, class T>
 struct wrapper<I, T, true>
 {
-    constexpr wrapper() = default;
+    wrapper() = default;
 
     wrapper(T const &v) :
         value(v)
